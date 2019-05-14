@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+
+<body>
+<script>
+URL = window.location.href
+force_new = URL.split(/\?|\&|\=/g).includes("new")
+force_old = URL.split(/\?|\&|\=/g).includes("old")
+
+new_page = "https://data36.com/the-junior-data-scientists-first-month-online-course/"
+old_page = "https://courses.data36.com/p/the-junior-data-scientist-s-first-month-online-video-course/"
+
+function randomizer() {
+    return (Math.floor(Math.random() * 2) == 0) ? new_page : old_page;
+}
+
+function set_cookie(old_or_new) {
+ var cookieName = old_or_new;
+ var cookieValue = 1;
+ var expirationTime = 2592000;
+ expirationTime = expirationTime * 1000;
+ var date = new Date();
+ var dateTimeNow = date.getTime();
+
+ date.setTime(dateTimeNow + expirationTime);
+ var date = date.toUTCString();
+ document.cookie = cookieName+"="+cookieValue+"; expires="+date+"; path=/; domain=." + location.hostname.replace(/^www\./i, "");
+}
+
+if (force_new === true){
+    set_cookie("ab_test_new");
+    window.location.href = new_page;}
+else if (force_old === true){
+    set_cookie("ab_test_old")
+    window.location.href = old_page;}
+else if (document.cookie.includes("ab_test_new"))
+    {window.location.href = new_page;}
+else if (document.cookie.includes("ab_test_old"))
+    {window.location.href = old_page;}
+else{
+    randomizer_result = randomizer();
+    if (randomizer_result === new_page){set_cookie("ab_test_new")};
+    if (randomizer_result === old_page){set_cookie("ab_test_old")};
+    window.location.href = randomizer_result;}
+</script>
+</body>
+
+</html>
